@@ -1,6 +1,6 @@
 buildscript {
 	repositories {
-		jcenter()
+		mavenCentral()
 		maven { url = "http://files.minecraftforge.net/maven" }
 		maven { url "https://plugins.gradle.org/m2/" }
 	}
@@ -44,14 +44,43 @@ configurations.all {
 
 repositories {
 	mavenLocal()
-	maven { url "https://maven.latmod.com/" } //Aurora
+
+	// ====================
+	// 			JEI
+	// ====================
+  	maven {
+  	  // location of the maven that hosts JEI files
+  	  name = "Progwml6 maven"
+  	  url = "https://dvs1.progwml6.com/files/maven/"
+  	}
+  	maven {
+  	  // location of a maven mirror for JEI files, as a fallback
+  	  name = "ModMaven"
+  	  url = "https://modmaven.dev"
+  	}
+	
+	// ====================
+	// 	   Gamestages	
+	// ====================
+	maven {
+        url 'https://maven.blamejared.com'
+    }
+
+	maven { url 'https://jitpack.io' }
+
 }
 
 dependencies {
-	deobfCompile "dev.latvian.mods:Aurora:1.+"
-	deobfProvided curse.resolve('jei', project.jei_file)
-	deobfProvided curse.resolve('packmode', project.packmode_file)
-	deobfProvided curse.resolve('game-stages', project.gamestages_file)
+
+	implementation ("com.github.Rushmore75:Aurora:a4ed06d")
+	implementation ("com.github.The-Acronym-Coders:PackMode:f4c43c4")
+
+	provided files(
+		// "/home/oliver/Documents/code_projects/java/Aurora/build/libs/Aurora-1.0.0.custom.jar",
+		// "/home/oliver/Documents/code_projects/java/KubeJS/lib/packmode-1.12.1-1.1.0.jar"
+		)
+	deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}:api"
+	compile "net.darkhax.gamestages:GameStages-1.12.2:2.0.123"
 }
 
 processResources {
